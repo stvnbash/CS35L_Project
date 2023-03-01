@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react"
 import NextNProgress from "nextjs-progressbar";
 import { initializeApp } from 'firebase/app';
 // import firebase from '../firebase/clientApp';
+import Layout from '../components/Layout'
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   // const firebaseConfig = {
@@ -22,7 +23,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
   return (
     <SessionProvider session={session}>
       <NextNProgress color="#FFD100" />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </SessionProvider>
   )
 }

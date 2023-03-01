@@ -4,6 +4,9 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useEffect } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
+import Intro from '../components/Intro'
+import MyClubs from '../components/MyClubs'
+import AllClubs from '../components/AllClubs'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +16,10 @@ export default function Home() {
   
   return (
     <div>
-      {status !== "loading" && session && <p className='' title={session.user.email as string}>{`Welcome, ${session.user.name}`}</p>}
+      <Intro />
+      {status !== "loading" && session && <MyClubs />}
+      <AllClubs />
+      {/* {status !== "loading" && session && <p className='' title={session.user?.email as string}>{`Welcome, ${session.user.name}`}</p>} */}
     </div>
   )
 }

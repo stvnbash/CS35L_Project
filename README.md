@@ -5,3 +5,5 @@ to restrict signin to UCLA students only
 
 configured tailwindcss
 
+
+curtisBranch: attempt to implement firebase query or push and maybe auth

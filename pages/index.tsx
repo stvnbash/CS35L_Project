@@ -8,12 +8,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const userData = useUserData();
-  const user = userData.user;
+  const user = userData;
   
   return (
     <div>
       <Intro />
-      {user?.email && <MyClubs />}
+      {user.username && <MyClubs />}
       <AllClubs />
     </div>
   )

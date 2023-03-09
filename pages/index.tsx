@@ -7,9 +7,10 @@ import { useUserData } from '@/lib/hooks'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
   const userData = useUserData();
   const user = userData.user;
-  
+  console.log(userData.user);
   return (
     <div>
       <Intro />
@@ -18,3 +19,5 @@ export default function Home() {
     </div>
   )
 }
+
+

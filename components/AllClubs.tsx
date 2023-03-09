@@ -1,4 +1,5 @@
 import ClubCard from './ClubCard'
+import Link from 'next/link'
 
 export default function Component() {
     return (
@@ -14,6 +15,7 @@ export default function Component() {
                     <ClubCard name="Sample club" description="sample description" />
                 </div>
             </div>
+            <h2 className="text-2xl"><Link href="/allclubevents">View All Club Events</Link></h2>
         </div>
     )
 }

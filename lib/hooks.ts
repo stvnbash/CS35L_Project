@@ -45,7 +45,12 @@ export function useUserData() {
 
       // set unsubscribe to the status of setUser
       unsubscribe = ref.onSnapshot((doc) => {
-        setUser(doc);
+        try {
+          setUser(doc);
+        }
+        catch {
+          console.log("document is empty!", doc);
+        }
       });
     }
     // user is null
@@ -70,11 +75,11 @@ async function addUser(user) {
     const userDoc = firestore.doc(`users/${user.email}`);
 
     // set the document contents to the user's profile
-    setDoc(
+    await setDoc(
       userDoc,
       { name: user?.displayName, email: user?.email, uid: user?.uid },
       // make sure to keep merge on so as to not accidentally overwrite
-      { merge: true }
+      { merge: false }
     );
 
     // logging *** CAN REMOVE ***

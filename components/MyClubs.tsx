@@ -1,10 +1,13 @@
-export default function Component() {
+import ClubCard from "./ClubCard";
+
+export default function Component({ myClubs }: { myClubs: any}) {
     return (
         <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
             <h2 className="text-2xl">My Clubs</h2>
-            {/* some map function to iterate over clubs for logged in user */}
-            <div className=" w-full p-4">
-                <p>Immerse yourself in UCLA!  Clubs you join will appear here!</p>
+            {/* some map function to iterate over myClubs for logged in user */}
+            <div className="grid grid-cols-3 gap-4 w-full p-4">
+                {myClubs.length === 0 && <p>Immerse yourself in UCLA!  Clubs you join will appear here!</p>}
+                {myClubs.map((club: any) => <ClubCard key={club.name} name={club.name} description={club.description} /> )}
             </div>
         </div>
     )

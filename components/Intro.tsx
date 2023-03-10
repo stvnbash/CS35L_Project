@@ -1,21 +1,18 @@
-//import { useSession, signIn, signOut } from "next-auth/react"
+// @ts-nocheck
 
-import { useUserData } from "@/lib/hooks"
+import { UserContext } from "@/lib/context"
+import { useContext } from "react"
 
 export default function Intro() {
-
-    //const { data: session, status } = useSession()
-    const userData = useUserData();
-    const user = userData.user;
-    const email = user?.email;
-    
+    // get context from _app
+    const { name, email, uid } = useContext(UserContext)
     return (
         <>
         <div>
             {<h1 className="text-1xl sm:text-2xl lg:text-4xl font-bold">
                 WELCOME
-                {email ? 
-                `, ${user?.displayName?.toUpperCase() as string}, ` 
+                {name ? 
+                `, ${name.toUpperCase() as string}, ` 
                 : 
                 ``} TO THE 
                 </h1>}

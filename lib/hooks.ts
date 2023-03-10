@@ -1,30 +1,86 @@
 //@ts-nocheck
 
-import { auth, firestore } from '../lib/firebase';
-import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, firestore, db } from "./firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-// read  auth record and user profile doc (temporarily just pull the display name)
+// read  auth and pull from users collection
 export function useUserData() {
+  // auth state to read
   const [user] = useAuthState(auth);
-  const [username, setUsername] = useState(null);
 
+  // user name, email, uid
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [uid, setUID] = useState(null);
+
+  // set user from doc
+  const setUser = (doc) => {
+    setName(doc.data().name);
+    setEmail(doc.data().email);
+    setUID(doc.data().uid);
+  };
+
+  // unset user
+  const noUser = () => {
+    setName(null);
+    setEmail(null);
+    setUID(null);
+  };
+
+  // pull from doc
   useEffect(() => {
-    // turn off realtime subscription
+    // tbh i still have no idea what the unsubscribe does
     let unsubscribe;
 
+    // if user isn't null (someone signed in)
     if (user) {
-      const ref = firestore.collection('users').doc(user.uid);
-      unsubscribe = ref.onSnapshot((doc) => {
-        setUsername(user.displayName);
-      });
-    } else {
-      setUsername(null);
-    }
+      // if the user is signing in for the first time, add them to the
+      // database
+      addUser(user);
 
+      // reference the users collection and search for the user's email
+      const ref = firestore.collection("users").doc(user.email);
+
+      // set unsubscribe to the status of setUser
+      unsubscribe = ref.onSnapshot((doc) => {
+        setUser(doc);
+      });
+    }
+    // user is null
+    else noUser();
+
+    // return unsubscribe ig
     return unsubscribe;
   }, [user]);
-
-  return { user, username };
+  return { name: name, email: email, uid: uid };
 }
 
+// function to pull user data from the database
+async function addUser(user) {
+  // search for the user reference in the database
+  const userRef = doc(db, "users", `${user.email}`);
+  // await the document snapshot
+  const docSnap = await getDoc(userRef);
+
+  // if the document doesn't exist, create a new user
+  if (!docSnap.exists()) {
+    // create a new user document
+    const userDoc = firestore.doc(`users/${user.email}`);
+
+    // set the document contents to the user's profile
+    setDoc(
+      userDoc,
+      { name: user?.displayName, email: user?.email, uid: user?.uid },
+      // make sure to keep merge on so as to not accidentally overwrite
+      { merge: true }
+    );
+
+    // logging *** CAN REMOVE ***
+    console.log("added user %s", user.email);
+  } else {
+    // logging *** CAN REMOVE ***
+    console.log("not adding new user %s", user.email);
+  }
+}

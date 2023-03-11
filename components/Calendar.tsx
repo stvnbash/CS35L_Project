@@ -28,10 +28,11 @@ class FullCalendar extends Component {
             start: new Date(event.start),
             end: new Date(event.end),
             allDay: event.allDay,
-            color: event.color,
+            backgroundColor: event.backgroundColor,
             display: event.display,
             textColor: event.textColor,
-            url: event.url
+            ...(event.url && {url: event.url}),
+            description: event.description
         }));
 
         return (

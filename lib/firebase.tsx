@@ -1,8 +1,10 @@
+//@ts-nocheck
+
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // stored this info in local variable for security purposes:
 const firebaseConfig = {
@@ -14,10 +16,10 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-
+let app;
 // Initialize Firebase
 if(!firebase.apps.length)
-    firebase.initializeApp(firebaseConfig)
+    app = firebase.initializeApp(firebaseConfig)
 
 // firebase auth
 export const auth = firebase.auth();
@@ -32,3 +34,6 @@ export const firestore = firebase.firestore();
 
 // storage
 export const storage = firebase.storage();
+
+// firestore database
+export const db = getFirestore(app);

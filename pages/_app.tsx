@@ -5,18 +5,16 @@ import type { AppProps } from 'next/app'
 import NextNProgress from "nextjs-progressbar";
 import Layout from '../components/Layout'
 
-
 import { UserContext } from '../lib/context';
 import { useUserData } from '../lib/hooks';
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+export default function App({ Component, pageProps: {...pageProps } }: AppProps) {
 
-  /* TODO: we want to pass this in as a global variable so it can 
-           be used throughout the component tree. */
+  // supply context
   const userData = useUserData();
-
+  
   return (
-    <UserContext.Provider value={{ userData }}>
+    <UserContext.Provider value={ userData }>
       <NextNProgress color="#FFD100" />
       <Layout>
         <Component {...pageProps} />

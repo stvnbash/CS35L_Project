@@ -14,12 +14,14 @@ export function useUserData() {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [uid, setUID] = useState(null);
+  const [joinedClubs, setJoinedClubs] = useState(null);
 
   // set user from doc
   const setUser = (doc) => {
     setName(doc.data().name);
     setEmail(doc.data().email);
     setUID(doc.data().uid);
+    setJoinedClubs(doc.data().clubs)
   };
 
   // unset user
@@ -27,6 +29,7 @@ export function useUserData() {
     setName(null);
     setEmail(null);
     setUID(null);
+    setJoinedClubs(null);
   };
 
   // pull from doc
@@ -41,10 +44,10 @@ export function useUserData() {
       addUser(user);
 
       // reference the users collection and search for the user's email
-      const ref = firestore.collection("users").doc(user.email);
+      const userDoc = firestore.collection("users").doc(user.email);
 
       // set unsubscribe to the status of setUser
-      unsubscribe = ref.onSnapshot((doc) => {
+      unsubscribe = userDoc.onSnapshot((doc) => {
         try {
           setUser(doc);
         }
@@ -59,7 +62,7 @@ export function useUserData() {
     // return unsubscribe ig
     return unsubscribe;
   }, [user]);
-  return { name: name, email: email, uid: uid };
+  return { name: name, email: email, uid: uid, joinedClubs: joinedClubs };
 }
 
 // function to pull user data from the database
@@ -79,7 +82,7 @@ async function addUser(user) {
       userDoc,
       { name: user?.displayName, email: user?.email, uid: user?.uid },
       // make sure to keep merge on so as to not accidentally overwrite
-      { merge: false }
+      { merge: true }
     );
 
     // logging *** CAN REMOVE ***

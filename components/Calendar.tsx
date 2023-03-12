@@ -69,7 +69,7 @@ export default function Component({ initialView, joinedClubs }: { initialView: s
             views={{
                 timeGridWeekShort: {
                     type: 'timeGridWeek',
-                    slotMinTime: '06:00:00',
+                    slotMinTime: '08:00:00',
                     slotMaxTime: '22:00:00'
                 }
             }}

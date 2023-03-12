@@ -6,7 +6,7 @@ import {UserContext} from "@/lib/context";
 export default function Home() {
 
     return (
-        <div className="w-screen px-80">
+        <div className="w-full">
             <FullCalendar initialView='timeGridWeekShort'/>
         </div>
     );

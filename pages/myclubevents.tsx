@@ -7,7 +7,7 @@ export default function Home() {
     const { joinedClubs } = useContext(UserContext);
 
     return (
-        <div className="w-screen px-80">
+        <div className="w-full">
             {joinedClubs && <FullCalendar initialView='timeGridWeekShort' joinedClubs={joinedClubs}/>}
         </div>
     );

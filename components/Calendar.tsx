@@ -3,81 +3,77 @@ import Calendar from '@fullcalendar/react';
 import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid'
 import { firestore } from "@/lib/firebase";
-import React, { Component} from "react";
-import {getDoc} from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 
 
-class FullCalendar extends Component {
-    constructor(props: string) {
-        super(props);
-        this.state = {
-            initialView: props.initialView,
-            email: props.email,
-            events: [],
-            docData: null,
-        };
+export default function Component({ initialView, joinedClubs }: { initialView: string, joinedClubs: any }) {
+    const [events, setEvents] = useState([]);
+    const [run, setRun] = useState(false);
+
+
+    useEffect(() => {
+        async function fetchEvents() {
+            const events = await fetchData(joinedClubs);
+            setRun(true);
+            setEvents(events);
+        }
+        fetchEvents();
+    }, [joinedClubs]);
+
+
+    async function fetchData(joinedClubs) {
+        let events = [];
+        if (joinedClubs) {
+            await Promise.all(joinedClubs.map(async (club) => {
+                const snapshot = await firestore.collection('clubs').doc(club).collection('events').get();
+                const event = snapshot.docs.map(doc => doc.data());
+                console.log("My Club Event", event);
+                events = events.concat(event);
+            }));
+        } else {
+            const snapshot = await firestore.collection('clubs').get();
+            const clubs = snapshot.docs.map(doc => doc.id);
+            await Promise.all(clubs.map(async (club) => {
+                const snapshot = await firestore.collection('clubs').doc(club).collection('events').get();
+                const event = snapshot.docs.map(doc => doc.data());
+                events = events.concat(event);
+            }));
+        }
+        return events;
     }
 
 
-    async componentDidMount() {
-        const userClubsRef = firestore.collection('users').doc(this.state.email);
-        const doc = await getDoc(userClubsRef);
-        const docData = doc.data();
-
-        docData.clubs.forEach((club) => {
-            firestore.collection('clubs').doc(club).collection('events').get().then(snapshot => {
-                const events = snapshot.docs.map(doc => doc.data());
-                this.setState( { events: this.state.events.concat(events)} )
-            })
-        });
-        // for (club of docData.clubs) {
-        //     console.log(club);
-        //     firestore.collection('clubs').doc(club).collection('events').get().then(snapshot => {
-        //         const event = snapshot.docs.map(doc => doc.data());
-        //         this.state.events.append(event);
-        //     })
-        // }
-        // firestore.collection('events').get().then(snapshot => {
-        //     const events = snapshot.docs.map(doc => doc.data());
-        //     this.setState({events});
-        // });
-    }
+    const eventArray = events.map(event => ({
+        title: event.title,
+        start: new Date(event.start),
+        end: new Date(event.end),
+        allDay: event.allDay,
+        backgroundColor: event.backgroundColor,
+        display: event.display,
+        textColor: event.textColor,
+        ...(event.url && {url: event.url}),
+        description: event.description
+    }));
 
 
-    render() {
-
-        const eventArray = this.state.events.map(event => ({
-            title: event.title,
-            start: new Date(event.start),
-            end: new Date(event.end),
-            allDay: event.allDay,
-            backgroundColor: event.backgroundColor,
-            display: event.display,
-            textColor: event.textColor,
-            ...(event.url && {url: event.url}),
-            description: event.description
-        }));
-
-        return (
-            <Calendar
-                plugins={[ timeGrid, dayGrid ]}
-                initialView={this.state.initialView}
-                events={eventArray}
-                headerToolbar={{
-                    start: 'today prev,next',
-                    center: 'title',
-                    end: 'dayGridDay,dayGridMonth,timeGridWeekShort'
-                }}
-                views={{
-                    timeGridWeekShort: {
-                        type: 'timeGridWeek',
-                        slotMinTime: '06:00:00',
-                        slotMaxTime: '22:00:00'
-                    }
-                }}
-                nowIndicator={true}
-            />
-        );
-    }
+    return (
+        <Calendar
+            plugins={[timeGrid, dayGrid]}
+            initialView={initialView}
+            events={eventArray}
+            headerToolbar={{
+                start: 'today prev,next',
+                center: 'title',
+                end: 'dayGridDay,dayGridMonth,timeGridWeekShort'
+            }}
+            views={{
+                timeGridWeekShort: {
+                    type: 'timeGridWeek',
+                    slotMinTime: '06:00:00',
+                    slotMaxTime: '22:00:00'
+                }
+            }}
+            nowIndicator={true}
+        />
+    );
 }
-export default FullCalendar;

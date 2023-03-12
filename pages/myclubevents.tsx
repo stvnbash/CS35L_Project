@@ -4,10 +4,11 @@ import {useContext} from "react";
 import {UserContext} from "@/lib/context";
 
 export default function Home() {
+    const { joinedClubs } = useContext(UserContext);
 
     return (
         <div className="w-screen px-80">
-            <FullCalendar initialView='timeGridWeekShort'/>
+            {joinedClubs && <FullCalendar initialView='timeGridWeekShort' joinedClubs={joinedClubs}/>}
         </div>
     );
 }

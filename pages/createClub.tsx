@@ -65,7 +65,6 @@ export default function hate() {
 
       <input type="text" onChange={getClubDescription} value={clubDescription} />
       <p>Input: {clubDescription}</p>
-
       <button onClick={() => inputCheck(clubName, clubDescription, email)}>Create Club</button>
       <button onClick={() => editCheck(clubName, clubDescription)}>Edit Club</button>
     </div>

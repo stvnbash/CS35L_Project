@@ -1,8 +1,10 @@
-export default function Component({name, description}: {name: string, description: string}) {
+import Link from 'next/link'
+
+export default function Component({name, description, clubid}: {name: string, description: string, clubid: string}) {
     return (
-        <div className="p-4 rounded-2xl bg-sky-200">
+        <Link href={`/club/${clubid}`} className="p-4 rounded-2xl bg-sky-200 overflow-hidden">
             <h3 className="text-lg font-bold">{name}</h3>
             <p>{description}</p>
-        </div>
+        </Link>
     )
 }

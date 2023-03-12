@@ -4,6 +4,7 @@ import ClubEdit from "./ClubEdit"
 import { UserContext } from "@/lib/context";
 import { useContext, useState } from "react";
 import Link from 'next/link'
+import FullCalendar from '../components/Calendar';
 
 export default function Component({ clubid, clubname, description, website, instagram, moderators }: { clubid: string, clubname: string, description: string, website: string, instagram: string }) {
     const { name, email, uid, joinedClubs } = useContext(UserContext);
@@ -25,13 +26,13 @@ export default function Component({ clubid, clubname, description, website, inst
                 />
                     : <h1 className="text-2xl font-bold flex-1">{clubname}</h1>}
                 <div className="flex gap-4">
-                    {email && (moderators && moderators.includes(email)) && <ClubEdit editMode={editMode} 
-                    setEdit={setEditMode} 
-                    clubid={clubid} 
-                    newName={newName} 
-                    newDescription={newDescription} 
-                    newWebsite={newWebsite}
-                    newInstagram={newInstagram}
+                    {email && (moderators && moderators.includes(email)) && <ClubEdit editMode={editMode}
+                        setEdit={setEditMode}
+                        clubid={clubid}
+                        newName={newName}
+                        newDescription={newDescription}
+                        newWebsite={newWebsite}
+                        newInstagram={newInstagram}
                     />}
                     {!editMode && email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
                     {!editMode && email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
@@ -58,7 +59,7 @@ export default function Component({ clubid, clubname, description, website, inst
                         onChange={() => { setNewWebsite(document.getElementById('website').value); }}
                     />
                         : website && <Link href={website ? website : '#'}>Website: {website}</Link>}
-                    {editMode ?     <input id="instagram" type="text" rows="10"
+                    {editMode ? <input id="instagram" type="text" rows="10"
                         className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         defaultValue={newInstagram}
                         placeholder="https://instagram.com"
@@ -67,6 +68,12 @@ export default function Component({ clubid, clubname, description, website, inst
                         : instagram && <Link href={instagram ? instagram : '#'}>Instagram: {instagram}</Link>}
                 </div>
             </div>}
+            <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
+                <h3 className="text-lg pb-4">Events</h3>
+                <div className="w-full">
+                    {joinedClubs && <FullCalendar initialView='dayGridMonth' joinedClubs={[clubid]} />}
+                </div>
+            </div>
         </div>
     )
 }

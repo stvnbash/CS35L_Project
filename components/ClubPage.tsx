@@ -9,7 +9,8 @@ export default function Component({ clubid, clubname, description }: { clubid: s
         <div>
             <div className="flex flex-row items-end  px-4">
                 <h1 className="text-2xl font-bold flex-1">{clubname}</h1>
-                {email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} />}
+                {email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
+                {email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
                 {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">

@@ -10,10 +10,10 @@ export default function Component({ clubs }) {
             <h2 className="text-2xl">All Clubs</h2>
             {/* some map function to iterate over clubs for logged in user */}
             <div className=" w-full p-4">
-                {clubs.length === 0 && <p>No Clubs exist at UCLA</p>}
-                <div className='grid grid-cols-3 gap-4'>
-                    {clubs.map((club) => <ClubCard key={club.name} name={club.name} description={club.description} /> )}
-                </div>
+                {clubs.length === 0 ? <p>No Clubs exist at UCLA</p>
+                    : <div className='grid grid-cols-3 gap-4'>
+                        {clubs.map((club) => <ClubCard key={club.name} name={club.name} description={club.description} />)}
+                    </div>}
             </div>
         </div>
     )

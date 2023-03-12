@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import ClubPage from 'components/ClubPage';
 import { getDoc, doc } from 'firebase/firestore';
 import { async } from "@firebase/util";
+import ErrorPage from 'next/error'
 
 export async function getServerSideProps(context) {
 
@@ -57,8 +58,12 @@ function UniqueClubPage({ clubs }) {
       clubDescription = clubs[i]["description"];
     }
    }
-  //  console.log(clubs[0]);
-  //  console.log("clubid: ", clubid);
+   
+   if (clubName==null || clubDescription==null)
+   {
+    return <ErrorPage statusCode={404} />
+   }
+
   return (
     <>
       <ClubPage name={clubName} description={clubDescription} />

@@ -2,7 +2,7 @@
 import ClubJoin from "./ClubJoin"
 import ClubEdit from "./ClubEdit"
 import { UserContext } from "@/lib/context";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from 'next/link'
 import FullCalendar from '../components/Calendar';
 
@@ -13,7 +13,10 @@ export default function Component({ clubid, clubname, description, website, inst
     const [newDescription, setNewDescription] = useState(description);
     const [newWebsite, setNewWebsite] = useState(website);
     const [newInstagram, setNewInstagram] = useState(instagram);
+    const [calRun, setCalRun] = useState(false);
+    const [eventsList, setEventsList] = useState(false);
     // console.log("mod", moderators)
+
 
     return (
         <div>
@@ -26,6 +29,7 @@ export default function Component({ clubid, clubname, description, website, inst
                 />
                     : <h1 className="text-2xl font-bold flex-1">{clubname}</h1>}
                 <div className="flex gap-4">
+                    {/* button to edit and save changes, displays if moderator */}
                     {email && (moderators && moderators.includes(email)) && <ClubEdit editMode={editMode}
                         setEdit={setEditMode}
                         clubid={clubid}
@@ -34,8 +38,11 @@ export default function Component({ clubid, clubname, description, website, inst
                         newWebsite={newWebsite}
                         newInstagram={newInstagram}
                     />}
+                    {/* Button to join or leave club, displays when not in editMode */}
                     {!editMode && email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
                     {!editMode && email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
+                    {/* button to add event, displays in editMode */}
+                    {editMode && <button className="text-lg font-bold px-4 ml-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Add Event</button>}
                 </div>
                 {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
             </div>
@@ -68,12 +75,13 @@ export default function Component({ clubid, clubname, description, website, inst
                         : instagram && <Link href={instagram ? instagram : '#'}>Instagram: {instagram}</Link>}
                 </div>
             </div>}
-            <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
-                <h3 className="text-lg pb-4">Events</h3>
+            {console.log("EL", calRun)}
+            {<div className="mt-4 p-4 bg-slate-100 rounded-2xl">
+                <h3 className="text-lg pb-4 flex-1">Events</h3>
                 <div className="w-full">
-                    {joinedClubs && <FullCalendar initialView='dayGridMonth' joinedClubs={[clubid]} />}
+                    {<FullCalendar initialView='dayGridMonth' joinedClubs={[clubid]} setEventsList={setEventsList} setCalRun={setCalRun} />}
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

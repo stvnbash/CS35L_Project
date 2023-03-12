@@ -6,19 +6,26 @@ import { firestore } from "@/lib/firebase";
 import React, { useEffect, useState } from "react";
 
 
-export default function Component({ initialView, joinedClubs }: { initialView: string, joinedClubs: any }) {
+export default function Component({ initialView, joinedClubs, setEventsList, setCalRun }: { initialView: string, joinedClubs: any }) {
     const [events, setEvents] = useState([]);
     const [run, setRun] = useState(false);
 
 
     useEffect(() => {
         async function fetchEvents() {
-            const events = await fetchData(joinedClubs);
+            const eventsUE = await fetchData(joinedClubs);
+            // local state in this component
             setRun(true);
-            setEvents(events);
+            setEvents(eventsUE);
+            // this state is for ClubPage and is passed in as a prop
+            // setEventsList && setEventsList(events);
+            setCalRun && setCalRun(run)
         }
         fetchEvents();
     }, [joinedClubs]);
+    
+
+    // setEventsList && setEventsList(events);
 
 
     async function fetchData(joinedClubs) {

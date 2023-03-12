@@ -5,9 +5,11 @@ import { ChangeEvent, useState } from "react";
 
 import { db } from '@/lib/firebase'
 import { doc, setDoc } from 'firebase/firestore'
+import { query, where, getDoc, getDocs } from 'firebase/firestore'
 import { collection, addDoc } from 'firebase/firestore'
 
-function inputCheck(clubName, clubDescription){
+function inputCheck(clubName, clubDescription, email){
+    console.log(email)
     if (clubName === ""  && clubDescription === "") {
         console.log("le")
     } else {
@@ -16,8 +18,14 @@ function inputCheck(clubName, clubDescription){
     }
 }
 
-function editCheck(clubName, clubDescription){
-    
+async function editCheck(clubName, clubDescription){
+    console.log("here")
+    const q = query(collection(db, "clubs"), where("name", "==", clubName));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id);
+    });
 }
 
 async function editClub(db, {clubName}, {clubDescription}) {
@@ -36,6 +44,7 @@ async function createClub(db, {clubName}, {clubDescription}) {
 export default function hate() {
   const [clubName, setClubName] = useState("");
   const [clubDescription, setClubDescription] = useState("")
+  const { name, email, uid } = useContext(UserContext);
 
   const getClubName = (e: ChangeEvent<HTMLInputElement>) => {
     //Store the input value to local state
@@ -49,16 +58,13 @@ export default function hate() {
   return (
     <div>
       <input type="text" onChange={getClubName} value={clubName} />
+      <p>Input: {clubName}</p>
 
-      {/*Use the input value from state */}
-      <p>Your input: {clubName}</p>
       <input type="text" onChange={getClubDescription} value={clubDescription} />
-
-      {/*Use the input value from state */}
-      <p>Your input: {clubDescription}</p>
-
-      <button onClick={() => inputCheck(clubName, clubDescription)}>Create Club</button>
-      <button onClick={() => editClub(db, {clubName}, {clubDescription})}>Edit Club</button>
+      <p>Input: {clubDescription}</p>
+      
+      <button onClick={() => inputCheck(clubName, clubDescription, email)}>Create Club</button>
+      <button onClick={() => editCheck(clubName, clubDescription)}>Edit Club</button>
     </div>
   );
 };

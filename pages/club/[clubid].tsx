@@ -53,10 +53,18 @@ export default function UniqueClubPage({ clubsDict }) {
   if (Object.keys(clubsDict).includes(clubid)) {
     const clubName = clubsDict[clubid].name
     const clubDescription = clubsDict[clubid].description
+    const clubWebsite = clubsDict[clubid].website
+    const clubInstagram = clubsDict[clubid].instagram
+    const clubModerators = clubsDict[clubid].moderators
 
     return (
       <>
-        <ClubPage clubid={clubid} clubname={clubName} description={clubDescription} />
+        <ClubPage clubid={clubid} 
+        clubname={clubName} 
+        description={clubDescription} 
+        website={clubWebsite} 
+        instagram={clubInstagram} 
+        moderators={clubModerators} />
       </>
       )
   } else {

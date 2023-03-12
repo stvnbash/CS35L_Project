@@ -7,7 +7,7 @@ import { db } from "@/lib/firebase"
 import { arrayUnion, arrayRemove } from "firebase/firestore"
 import { firestore } from "@/lib/firebase";
 
-export default function Component({ clubid, editMode, setEdit, newName, newDescription }) {
+export default function Component({ clubid, editMode, setEdit, newName, newDescription, newWebsite, newInstagram}) {
     const { name, email, uid, joinedClubs } = useContext(UserContext);
     // const userData = useUserData();
 

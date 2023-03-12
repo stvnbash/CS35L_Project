@@ -2,11 +2,8 @@
 
 import { firestore } from "@/lib/firebase";
 import { useRouter } from 'next/router';
-import { UserContext } from "@/lib/context";
-import { useContext, useEffect, useState } from "react";
 import ClubPage from 'components/ClubPage';
-import { getDoc, doc } from 'firebase/firestore';
-import { async } from "@firebase/util";
+import ClubJoin from 'components/ClubJoin';
 import ErrorPage from 'next/error'
 
 export async function getServerSideProps(context) {
@@ -57,7 +54,12 @@ export default function UniqueClubPage({ clubsDict }) {
     const clubName = clubsDict[clubid].name
     const clubDescription = clubsDict[clubid].description
 
-    return (<ClubPage clubid={clubid} name={clubName} description={clubDescription} />)
+    return (
+      <>
+        <ClubJoin></ClubJoin>
+        <ClubPage clubid={clubid} name={clubName} description={clubDescription} />
+      </>
+      )
   } else {
     return (<ErrorPage statusCode={404} />)
   }

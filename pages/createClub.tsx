@@ -22,10 +22,13 @@ async function editCheck(clubName, clubDescription){
     console.log("here")
     const q = query(collection(db, "clubs"), where("name", "==", clubName));
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
+    const clubData = await getDocs(q);
+    
+    clubData.forEach((doc) => {
         console.log(doc.id);
+        console.log(doc.data())
     });
+
 }
 
 async function editClub(db, {clubName}, {clubDescription}) {
@@ -62,7 +65,7 @@ export default function hate() {
 
       <input type="text" onChange={getClubDescription} value={clubDescription} />
       <p>Input: {clubDescription}</p>
-      
+
       <button onClick={() => inputCheck(clubName, clubDescription, email)}>Create Club</button>
       <button onClick={() => editCheck(clubName, clubDescription)}>Edit Club</button>
     </div>

@@ -12,8 +12,9 @@ export default function Component() {
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center max-w-6xl lg:max-w-7xl xl:max-w-8xl mx-auto">
                 <Link href='/' className="p-2 text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-sky-300">Club<span className="ml-1 px-1 py-0 rounded-sm bg-gradient-to-r to-emerald-300 from-sky-300 text-slate-900">hub</span></Link>
                 <div className='flex gap-4'>
+                    <Link href='/'>Home</Link>
                     <Link href='/allclubevents'>Events</Link>
-                    <Link href='/allclubevents'>My Events</Link>
+                    {email && <Link href='/myclubevents'>My Events</Link>}
                 </div>
                 <div className='flex flex-col items-center text-sm'>
                     {email && <p className='' title={email as string}>{`Welcome, ${name}`}</p>}

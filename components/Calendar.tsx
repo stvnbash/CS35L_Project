@@ -51,7 +51,7 @@ export default function Component({ initialView, joinedClubs }: { initialView: s
         backgroundColor: event.backgroundColor,
         display: event.display,
         textColor: event.textColor,
-        ...(event.url && {url: event.url}),
+        ...(event.url && { url: event.url }),
         description: event.description
     }));
 

@@ -23,7 +23,7 @@
 //     const q = query(collection(db, "clubs"), where("name", "==", clubName));
 
 //     const clubData = await getDocs(q);
-    
+
 //     clubData.forEach((doc) => {
 //         console.log(doc.id);
 //         console.log(doc.data())
@@ -79,7 +79,7 @@ import ClubPage from 'components/ClubPage';
 import ClubJoin from 'components/ClubJoin';
 import CreateClub from "@/components/CreateClub";
 
-export default function Page({}) {
+export default function Page({ }) {
     return (
         <CreateClub />
     )

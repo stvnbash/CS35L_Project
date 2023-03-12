@@ -22,24 +22,24 @@ export async function getServerSideProps(context) {
 
   // mapping docs to array of objects
   const clubs = clubsMetaData.map((doc) => doc.data());
-  
+
   const clubsAllData = clubsMetaData.map((doc) => [doc.id, doc.data()]);
 
   // clubsAllData = clubsAllData.map(i => {{id: i[0], ...i[1]}} )
 
   let clubsDict = {};
-  for(let i = 0; i < clubs.length; i++) {
-    clubsDict[clubDocIDs[i]] = {id: clubDocIDs[i], ...clubs[i]};
+  for (let i = 0; i < clubs.length; i++) {
+    clubsDict[clubDocIDs[i]] = { id: clubDocIDs[i], ...clubs[i] };
   }
 
-  for(let i = 0; i < clubsAllData.length; i++) { 
-    clubsAllData[i] = {id: clubsAllData[i][0], ...clubsAllData[i][1]}
+  for (let i = 0; i < clubsAllData.length; i++) {
+    clubsAllData[i] = { id: clubsAllData[i][0], ...clubsAllData[i][1] }
   }
 
   return {
     props: {
       clubs: JSON.parse(JSON.stringify(clubsAllData)),
-      clubsDict: JSON.parse(JSON.stringify(clubsDict)), 
+      clubsDict: JSON.parse(JSON.stringify(clubsDict)),
     }, // will be passed to the page component as props
   };
 }
@@ -78,14 +78,14 @@ export default function Home({ clubs, clubsDict }) {
     <div>
       <Intro />
       <input className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="search"
-                    autoComplete="off"
-                    type="search"
-                    placeholder="Search"
-                    onChange={() => {setSearch(document.getElementById('search').value);}}>
-                </input>
-      {(search === '') && email && <ClubCardGrid clubs={myClubs} search='' blockTitle="My Clubs" noClubsMessage="Immerse yourself in UCLA!  Clubs you join will appear here!"/>}
-      <ClubCardGrid clubs={clubs} search={search.toLowerCase()} blockTitle="All Clubs" noClubsMessage="Error loading clubs at UCLA"/>
+        id="search"
+        autoComplete="off"
+        type="search"
+        placeholder="Search"
+        onChange={() => { setSearch(document.getElementById('search').value); }}>
+      </input>
+      {(search === '') && email && <ClubCardGrid clubs={myClubs} search='' blockTitle="My Clubs" noClubsMessage="Immerse yourself in UCLA!  Clubs you join will appear here!" />}
+      <ClubCardGrid clubs={clubs} search={search.toLowerCase()} blockTitle="All Clubs" noClubsMessage="Error loading clubs at UCLA" />
     </div>
   );
 }

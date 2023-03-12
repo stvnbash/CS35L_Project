@@ -1,14 +1,14 @@
 // @ts-nocheck
 
 import ClubCard from "./ClubCard";
-import { useState} from 'react';
+import { useState } from 'react';
 
 export default function Component({ clubs, blockTitle, noClubsMessage, search }: { clubs: any, blockTitle: string, noClubsMessage: string, search?: string }) {
-    
+
     let c = []
     for (let club of clubs) {
         console.log(search, club.name, club.description)
-        if (search === '' || club.name?.toLowerCase().includes(search) || club.description?.toLowerCase().includes(search) ) {
+        if (search === '' || club.name?.toLowerCase().includes(search) || club.description?.toLowerCase().includes(search)) {
             c.push(club)
         }
     }
@@ -18,7 +18,7 @@ export default function Component({ clubs, blockTitle, noClubsMessage, search }:
             <h2 className="text-2xl">{blockTitle}</h2>
             {/* some map function to iterate over myClubs for logged in user */}
             {/* <div className=" w-full p-4"> */}
-            {c.length === 0 ? <p>{search === '' ? noClubsMessage: "No clubs match your search"}</p>
+            {c.length === 0 ? <p>{search === '' ? noClubsMessage : "No clubs match your search"}</p>
                 : <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 w-full p-4">
                     {c.map((c: any) => <ClubCard key={c.id} clubid={c.id} name={c.name} description={c.description} />)}
                 </div>}

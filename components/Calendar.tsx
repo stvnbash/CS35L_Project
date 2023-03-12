@@ -1,28 +1,51 @@
+// @ts-nocheck
 import Calendar from '@fullcalendar/react';
 import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid'
 import { firestore } from "@/lib/firebase";
-import React, {Component} from "react";
+import React, { Component} from "react";
+import {getDoc} from "firebase/firestore";
 
 
 class FullCalendar extends Component {
     constructor(props: string) {
         super(props);
         this.state = {
-            events: []
+            initialView: props.initialView,
+            email: props.email,
+            events: [],
+            docData: null,
         };
     }
 
 
-    componentDidMount() {
-        firestore.collection('events').get().then(snapshot => {
-            const events = snapshot.docs.map(doc => doc.data());
-            this.setState({ events });
+    async componentDidMount() {
+        const userClubsRef = firestore.collection('users').doc(this.state.email);
+        const doc = await getDoc(userClubsRef);
+        const docData = doc.data();
+
+        docData.clubs.forEach((club) => {
+            firestore.collection('clubs').doc(club).collection('events').get().then(snapshot => {
+                const events = snapshot.docs.map(doc => doc.data());
+                this.setState( { events: this.state.events.concat(events)} )
+            })
         });
+        // for (club of docData.clubs) {
+        //     console.log(club);
+        //     firestore.collection('clubs').doc(club).collection('events').get().then(snapshot => {
+        //         const event = snapshot.docs.map(doc => doc.data());
+        //         this.state.events.append(event);
+        //     })
+        // }
+        // firestore.collection('events').get().then(snapshot => {
+        //     const events = snapshot.docs.map(doc => doc.data());
+        //     this.setState({events});
+        // });
     }
 
 
     render() {
+
         const eventArray = this.state.events.map(event => ({
             title: event.title,
             start: new Date(event.start),
@@ -38,7 +61,7 @@ class FullCalendar extends Component {
         return (
             <Calendar
                 plugins={[ timeGrid, dayGrid ]}
-                {...this.props}
+                initialView={this.state.initialView}
                 events={eventArray}
                 headerToolbar={{
                     start: 'today prev,next',

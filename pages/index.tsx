@@ -69,12 +69,23 @@ export default function Home({ clubs, clubsDict }) {
     }
   }
 
+  const [search, setSearch] = useState('')
+
+
+
 
   return (
     <div>
       <Intro />
-      {email && <ClubCardGrid clubs={myClubs} blockTitle="My Clubs" noClubsMessage="Immerse yourself in UCLA!  Clubs you join will appear here!"/>}
-      <ClubCardGrid clubs={clubs} blockTitle="All Clubs" noClubsMessage="Error loading clubs at UCLA"/>
+      <input className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="search"
+                    autoComplete="off"
+                    type="search"
+                    placeholder="Search"
+                    onChange={() => {setSearch(document.getElementById('search').value);}}>
+                </input>
+      {(search === '') && email && <ClubCardGrid clubs={myClubs} search='' blockTitle="My Clubs" noClubsMessage="Immerse yourself in UCLA!  Clubs you join will appear here!"/>}
+      <ClubCardGrid clubs={clubs} search={search.toLowerCase()} blockTitle="All Clubs" noClubsMessage="Error loading clubs at UCLA"/>
     </div>
   );
 }

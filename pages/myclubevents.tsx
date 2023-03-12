@@ -7,8 +7,8 @@ export default function Home() {
     const { joinedClubs } = useContext(UserContext);
 
     return (
-        <div className="w-full">
-            {joinedClubs && <FullCalendar initialView='timeGridWeekShort' joinedClubs={joinedClubs}/>}
+        <div className="w-full p-4 bg-slate-100 rounded-2xl">
+            {joinedClubs && <FullCalendar initialView='dayGridMonth' joinedClubs={joinedClubs}/>}
         </div>
     );
 }

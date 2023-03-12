@@ -6,7 +6,7 @@ import { firestore } from "@/lib/firebase";
 import React, { useEffect, useState } from "react";
 
 
-export default function Component({ initialView, joinedClubs }: { initialView: string, joinedClubs: any }) {
+export default function Component({ initialView, joinedClubs }: { initialView: string, joinedClubs?: any }) {
     const [events, setEvents] = useState([]);
     const [run, setRun] = useState(false);
 

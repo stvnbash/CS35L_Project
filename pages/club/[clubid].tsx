@@ -56,8 +56,7 @@ export default function UniqueClubPage({ clubsDict }) {
 
     return (
       <>
-        <ClubJoin></ClubJoin>
-        <ClubPage clubid={clubid} name={clubName} description={clubDescription} />
+        <ClubPage clubid={clubid} clubname={clubName} description={clubDescription} />
       </>
       )
   } else {

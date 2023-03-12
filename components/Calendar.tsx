@@ -23,7 +23,7 @@ export default function Component({ initialView, joinedClubs, setEventsList, set
         }
         fetchEvents();
     }, [joinedClubs]);
-    
+
 
     // setEventsList && setEventsList(events);
 

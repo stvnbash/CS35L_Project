@@ -44,7 +44,7 @@ export default function Component({ clubid, editMode, setEdit, newName, newDescr
 
     return (
         <button
-            className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
+            className="text-lg font-bold px-4 ml-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
             onClick={() => {editMode && saveChanges(); setEdit(!editMode); }}>
             {!editMode ? "Edit Club" : "Save"}
         </button>

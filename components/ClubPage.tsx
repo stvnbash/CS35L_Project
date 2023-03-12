@@ -33,8 +33,8 @@ export default function Component({ clubid, clubname, description, website, inst
                     newWebsite={newWebsite}
                     newInstagram={newInstagram}
                     />}
-                    {email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
-                    {email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
+                    {!editMode && email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
+                    {!editMode && email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
                 </div>
                 {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
             </div>
@@ -48,7 +48,7 @@ export default function Component({ clubid, clubname, description, website, inst
                 />
                     : <p>{description}</p>}
             </div>
-            {(website || instagram) && <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
+            {(website || instagram || editMode) && <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
                 {/* <h3 className="text-lg pb-4">Links</h3> */}
                 <div className="flex flex-col gap-4">
                     {editMode ? <input id="website" type="text" rows="15"
@@ -58,7 +58,7 @@ export default function Component({ clubid, clubname, description, website, inst
                         onChange={() => { setNewWebsite(document.getElementById('website').value); }}
                     />
                         : website && <Link href={website ? website : '#'}>Website: {website}</Link>}
-                    {editMode ? <input id="instagram" type="text" rows="10"
+                    {editMode ?     <input id="instagram" type="text" rows="10"
                         className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         defaultValue={newInstagram}
                         placeholder="https://instagram.com"

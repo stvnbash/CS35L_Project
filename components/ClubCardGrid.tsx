@@ -20,7 +20,7 @@ export default function Component({ clubs, blockTitle, noClubsMessage, search }:
             {/* <div className=" w-full p-4"> */}
             {c.length === 0 ? <p>{search === '' ? noClubsMessage: "No clubs match your search"}</p>
                 : <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 w-full p-4">
-                    {c.map((c: any) => <ClubCard key={c.id} name={c.name} description={c.description} />)}
+                    {c.map((c: any) => <ClubCard key={c.id} clubid={c.id} name={c.name} description={c.description} />)}
                 </div>}
             {/* </div> */}
         </div>

@@ -37,7 +37,7 @@ function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string }) {
     );
 }
 
-export default function Component({ clubEvent, event, club }: { clubEvent: any, event: string, club: string }) {
+export default function Component({ clubEvent, event, club, clubData }: { clubEvent: any, event: string, club: string, clubData: any }) {
     const start = new Date(clubEvent.start);
     const end = new Date(clubEvent.end);
     const [formattedStart, setFormattedStart] = useState();
@@ -62,10 +62,13 @@ export default function Component({ clubEvent, event, club }: { clubEvent: any, 
         <div>
             <div className="flex flex-row items-end  px-4">
                 <h1 className="text-2xl font-bold flex-1">Event: {clubEvent.title}</h1>
-                {email && <DeleteEvent eventId={event} clubId={club} />}
+                {email && clubData.moderators.includes(email) && <DeleteEvent eventId={event} clubId={club} />}
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
-                <h3 className="text-lg pb-4 font-bold">Description</h3>
+                <h3 className="text-lg pb-4 font-bold">Hosted by</h3>
+                <p>{clubData.name}</p>
+                <br />
+                <h3 className="text-lg pb-4 font-bold">Event Description</h3>
                 <p>{clubEvent.description}</p>
                 <br />
                 {/* <div style={{ display: 'inline-block'}}> */}

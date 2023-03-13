@@ -2,11 +2,8 @@ const puppeteer = require("puppeteer");
 
 import { db } from "../../../lib/firebase";
 import {
-  doc,
   addDoc,
-  setDoc,
   collection,
-  onSnapshot,
   query,
   where,
   limit

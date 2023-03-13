@@ -42,14 +42,14 @@ export default function Component({ clubid, clubname, description, website, inst
                     {!editMode && email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
                     {!editMode && email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
                     {/* button to add event, displays in editMode */}
-                    {editMode && <button className="text-lg font-bold px-4 ml-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Add Event</button>}
+                    {editMode && <Link href={`/club/addevent/${clubid}`} className="text-lg font-bold px-4 ml-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Add Event</Link>}
                 </div>
                 {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
-                <Link style={{marginLeft: '20px'}}
+                {/* <Link style={{marginLeft: '20px'}}
                     className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
                     href={"/club/addevent/"+clubid}>
                     Add Event
-                </Link>
+                </Link> */}
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
                 <h3 className="text-lg pb-4">More information</h3>

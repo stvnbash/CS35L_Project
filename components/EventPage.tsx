@@ -1,9 +1,15 @@
 // @ts-nocheck
 import { firestore } from '@/lib/firebase'
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import { useContext } from "react";
+import { UserContext } from '@/lib/context';
 
-function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string}) {
-    const[isDeleting, setIsDeleting] = useState(false);
+
+function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string }) {
+    const [isDeleting, setIsDeleting] = useState(false);
+    const router = useRouter();
+
 
     async function handleDelete() {
         setIsDeleting(true);
@@ -19,6 +25,7 @@ function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string}) {
         }
 
         setIsDeleting(false);
+        router.push(`/club/${clubId}`)
     }
 
     return (
@@ -30,11 +37,12 @@ function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string}) {
     );
 }
 
-export default function Component({ clubEvent, event, club }: { clubEvent: any, event: string, club: string}) {
+export default function Component({ clubEvent, event, club }: { clubEvent: any, event: string, club: string }) {
     const start = new Date(clubEvent.start);
     const end = new Date(clubEvent.end);
-    const[formattedStart, setFormattedStart] = useState();
-    const[formattedEnd, setFormattedEnd] = useState();
+    const [formattedStart, setFormattedStart] = useState();
+    const [formattedEnd, setFormattedEnd] = useState();
+    const { email } = useContext(UserContext);
 
     const options = {
         year: "numeric",
@@ -53,20 +61,24 @@ export default function Component({ clubEvent, event, club }: { clubEvent: any, 
     return (
         <div>
             <div className="flex flex-row items-end  px-4">
-                <h1 className="text-2xl font-bold flex-1">{clubEvent.title}</h1>
-                <DeleteEvent eventId={event} clubId={club}/>
+                <h1 className="text-2xl font-bold flex-1">Event: {clubEvent.title}</h1>
+                {email && <DeleteEvent eventId={event} clubId={club} />}
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
-                <h3 className="text-lg pb-4">Description</h3>
+                <h3 className="text-lg pb-4 font-bold">Description</h3>
                 <p>{clubEvent.description}</p>
-                <br/>
-                <div style={{ display: 'inline-block'}}>
-                    <h3 className="test-lg pb-4">Start Time</h3>
-                    <p>{formattedStart}</p>
-                </div>
-                <div style={{ display: 'inline-block', marginLeft: '20px'}}>
-                    <h3 className="test-lg pb-4">End Time</h3>
-                    <p>{formattedEnd}</p>
+                <br />
+                {/* <div style={{ display: 'inline-block'}}> */}
+                <div className='flex flex-row gap-8'>
+                    <div className=''>
+                        <h3 className="test-lg pb-4 font-bold">Start Time</h3>
+                        <p>{formattedStart}</p>
+                    </div>
+                    {/* <div style={{ display: 'inline-block', marginLeft: '20px'}}> */}
+                    <div className=''>
+                        <h3 className="test-lg pb-4 font-bold">End Time</h3>
+                        <p>{formattedEnd}</p>
+                    </div>
                 </div>
             </div>
         </div>

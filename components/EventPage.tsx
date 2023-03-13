@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import { useContext } from "react";
 import { UserContext } from '@/lib/context';
+import Link from 'next/link'
 
 
 function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string }) {
@@ -66,7 +67,8 @@ export default function Component({ clubEvent, event, club, clubData }: { clubEv
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
                 <h3 className="text-lg pb-4 font-bold">Hosted by</h3>
-                <p>{clubData.name}</p>
+                <Link href={`/club/${club}`}>{clubData.name}</Link>
+                <br />
                 <br />
                 <h3 className="text-lg pb-4 font-bold">Event Description</h3>
                 <p>{clubEvent.description}</p>

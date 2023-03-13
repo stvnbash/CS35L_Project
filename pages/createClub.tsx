@@ -8,8 +8,10 @@ import { doc, setDoc } from 'firebase/firestore'
 import { query, where, getDoc, getDocs } from 'firebase/firestore'
 import { collection, addDoc, updateDoc, limit } from 'firebase/firestore'
 
-async function inputCheck(clubName, clubDescription, email){
+async function inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite){
     console.log(email)
+    console.log(clubInstagram)
+    console.log(clubWebsite)
     if (clubName !== ""  && clubDescription !== "") {
         let data;
         const q = query(collection(db, "clubs"), where("name", "==", clubName), limit(1));
@@ -19,7 +21,8 @@ async function inputCheck(clubName, clubDescription, email){
         });
         console.log(data)
         if(data === undefined){
-            createClub(db, {clubName}, {clubDescription})
+            console.log("ef")
+            createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite})
         } else {
             console.log("fe")
         }
@@ -27,18 +30,18 @@ async function inputCheck(clubName, clubDescription, email){
     }
 }
 
-async function editCheck(clubName, newClubDescription, newClubName){
-
+async function editCheck(clubName, newClubDescription, newClubName, email){
+    console.log(email)
     const q = query(collection(db, "clubs"), where("name", "==", clubName));
  
     const clubData = await getDocs(q);
-    let id = 3;
+    let id;
     let data;
     clubData.forEach((doc) => {
         id = doc.id;
         data = doc.data();
     });
- 
+    console.log(data)
     if(newClubDescription === ""){
         newClubDescription = data.description
     }
@@ -49,16 +52,22 @@ async function editCheck(clubName, newClubDescription, newClubName){
     });
 }
 
-async function createClub(db, {clubName}, {clubDescription}) {
+async function createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite}) {
+    //let clubId = clubName.replace(/\s+/g, "")
     await addDoc(collection(db, "clubs"), {
         name: clubName,
-        description: clubDescription
+        description: clubDescription,
+        moderators: [email],
+        instagram: clubInstagram,
+        website: clubWebsite
     });
 }
 
 export default function hate() {
   const [clubName, setClubName] = useState("");
   const [clubDescription, setClubDescription] = useState("")
+  const [clubWebsite, setWebsite] = useState("");
+  const [clubInstagram, setInstagram] = useState("")
   const [newClubName, setNewClubName] = useState("");
   const [newClubDescription, setNewClubDescription] = useState("")
   const { name, email, uid } = useContext(UserContext);
@@ -70,6 +79,14 @@ export default function hate() {
   const getClubDescription = (e: ChangeEvent<HTMLInputElement>) => {
     //Store the input value to local state
     setClubDescription(e.target.value);
+  };
+  const getClubWebsite = (e: ChangeEvent<HTMLInputElement>) => {
+    //Store the input value to local state
+    setWebsite(e.target.value);
+  };
+  const getClubInstagram = (e: ChangeEvent<HTMLInputElement>) => {
+    //Store the input value to local state
+    setInstagram(e.target.value);
   };
   const getNewClubName = (e: ChangeEvent<HTMLInputElement>) => {
     //Store the input value to local state
@@ -88,14 +105,20 @@ export default function hate() {
       <input type="text" onChange={getClubDescription} value={clubDescription} />
       <p>Input: {clubDescription}</p>
 
+      <input type="text" onChange={getClubWebsite} value={clubWebsite} />
+      <p>Input: {clubWebsite}</p>
+
+      <input type="text" onChange={getClubInstagram} value={clubInstagram} />
+      <p>Input: {clubInstagram}</p>
+
       <input type="text" onChange={getNewClubName} value={newClubName} />
       <p>Input: {newClubName}</p>
 
       <input type="text" onChange={getNewClubDescription} value={newClubDescription} />
       <p>Input: {newClubDescription}</p>
 
-      <button onClick={() => inputCheck(clubName, clubDescription, email)}>Create Club</button>
-      <button onClick={() => editCheck(clubName, newClubName, newClubDescription)}>Edit Club</button>
+      <button onClick={() => inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite)}>Create Club</button>
+      <button onClick={() => editCheck(clubName, newClubName, newClubDescription, email)}>Edit Club</button>
     </div>
   );
 };

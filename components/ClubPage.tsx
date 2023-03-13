@@ -27,7 +27,7 @@ export default function Component({ clubid, clubname, description, website, inst
                     placeholder="Club Name"
                     onChange={() => { setNewName(document.getElementById('clubname').value); }}
                 />
-                    : <h1 className="text-2xl font-bold flex-1">{clubname}</h1>}
+                    : <h1 className="text-2xl font-bold flex-1">{newName}</h1>}
                 <div className="flex gap-4">
                     {/* button to edit and save changes, displays if moderator */}
                     {email && (moderators && moderators.includes(email)) && <ClubEdit editMode={editMode}
@@ -59,9 +59,9 @@ export default function Component({ clubid, clubname, description, website, inst
                     placeholder="Club description"
                     onChange={() => { setNewDescription(document.getElementById('clubdescription').value); }}
                 />
-                    : <p>{description}</p>}
+                    : <p>{newDescription}</p>}
             </div>
-            {(website || instagram || editMode) && <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
+            {(newWebsite || newInstagram || editMode) && <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
                 {/* <h3 className="text-lg pb-4">Links</h3> */}
                 <div className="flex flex-col gap-4">
                     {editMode ? <input id="website" type="text" rows="15"
@@ -70,14 +70,14 @@ export default function Component({ clubid, clubname, description, website, inst
                         placeholder="https://myclub.com"
                         onChange={() => { setNewWebsite(document.getElementById('website').value); }}
                     />
-                        : website && <Link href={website ? website : '#'}>Website: {website}</Link>}
+                        : newWebsite && <Link href={newWebsite ? newWebsite : '#'}>Website: {newWebsite}</Link>}
                     {editMode ? <input id="instagram" type="text" rows="10"
                         className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         defaultValue={newInstagram}
                         placeholder="https://instagram.com"
                         onChange={() => { setNewInstagram(document.getElementById('instagram').value); }}
                     />
-                        : instagram && <Link href={instagram ? instagram : '#'}>Instagram: {instagram}</Link>}
+                        : newInstagram && <Link href={newInstagram ? newInstagram : '#'}>Instagram: {newInstagram}</Link>}
                 </div>
             </div>}
             {console.log("EL", calRun)}

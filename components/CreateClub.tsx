@@ -5,11 +5,10 @@ import { useContext, ChangeEvent, useState } from "react"
 
 import { db } from '@/lib/firebase'
 import { doc, setDoc, query, where, getDoc, getDocs, collection, addDoc, limit } from 'firebase/firestore'
+import { useRouter } from 'next/router'
+
 
 async function inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite){
-    console.log(email)
-    console.log(clubInstagram)
-    console.log(clubWebsite)
     if (clubName !== ""  && clubDescription !== "") {
         let data;
         const q = query(collection(db, "clubs"), where("name", "==", clubName), limit(1));
@@ -17,12 +16,8 @@ async function inputCheck(clubName, clubDescription, email, clubInstagram, clubW
         clubData.forEach((doc) => {
             data = doc.data();
         });
-        console.log(data)
         if(data === undefined){
-            console.log("ef")
             createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite})
-        } else {
-            console.log("fe")
         }
     }
 }
@@ -44,6 +39,7 @@ export default function CreateClub() {
     const [clubDescription, setClubDescription] = useState("")
     const [clubWebsite, setWebsite] = useState("");
     const [clubInstagram, setInstagram] = useState("")
+    const router = useRouter()
 
     const getClubName = (e: ChangeEvent<HTMLInputElement>) => {
         //Store the input value to local state
@@ -99,7 +95,7 @@ export default function CreateClub() {
                     value={clubInstagram} />
                 <button
                     className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
-                    onClick={() => inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite)}>
+                    onClick={() => {router.push(`/`); inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite)}}>
                     Create Club
                 </button>
             </div>

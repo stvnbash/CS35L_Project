@@ -18,7 +18,7 @@ const firebaseConfig = {
 
 let app;
 // Initialize Firebase
-if(!firebase.apps.length)
+if (!firebase.apps.length)
     app = firebase.initializeApp(firebaseConfig)
 
 // firebase auth
@@ -27,7 +27,7 @@ export const auth = firebase.auth();
 // auth provider (google)
 export const provider = new firebase.auth.GoogleAuthProvider().setCustomParameters({
     'hd': 'g.ucla.edu'
-  });
+});
 
 // firestore
 export const firestore = firebase.firestore();

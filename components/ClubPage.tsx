@@ -2,6 +2,7 @@
 import ClubJoin from "./ClubJoin"
 import { UserContext } from "@/lib/context";
 import { useContext } from "react";
+import Link from 'next/link'
 
 export default function Component({ clubid, clubname, description }: { clubid: string, clubname: string, description: string }) {
     const { name, email, uid, joinedClubs } = useContext(UserContext);
@@ -12,6 +13,11 @@ export default function Component({ clubid, clubname, description }: { clubid: s
                 {email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
                 {email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
                 {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
+                <Link
+                    className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
+                    href={"/club/addevent/"+clubid}>
+                    Add Event
+                </Link>
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
                 <h3 className="text-lg pb-4">More information</h3>

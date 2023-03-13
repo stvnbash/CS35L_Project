@@ -5,15 +5,15 @@ import { useContext } from "react";
 import Link from 'next/link'
 
 export default function Component({ clubid, clubname, description }: { clubid: string, clubname: string, description: string }) {
-    const { name, email, uid, joinedClubs } = useContext(UserContext);
+    const { email, joinedClubs } = useContext(UserContext);
     return (
         <div>
-            <div className="flex flex-row items-end  px-4">
+            <div className="flex flex-row items-end px-4">
                 <h1 className="text-2xl font-bold flex-1">{clubname}</h1>
                 {email && (!joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={true} />}
                 {email && (joinedClubs.includes(clubid)) && <ClubJoin clubid={clubid} joinMode={false} />}
                 {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
-                <Link
+                <Link style={{marginLeft: '20px'}}
                     className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
                     href={"/club/addevent/"+clubid}>
                     Add Event

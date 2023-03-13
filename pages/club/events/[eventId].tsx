@@ -26,10 +26,13 @@ export async function getServerSideProps(context) {
 }
 
 export default function UniqueClubEventPage({ club, event, clubEventsDict }) {
+    console.log("Dict", clubEventsDict);
+    console.log("Event ID", event);
+    console.log("Club ID", club);
     if (Object.keys(clubEventsDict).includes(event)) {
         return (
             <>
-                <EventPage clubEvent={clubEventsDict[event]} club={club}/>
+                <EventPage clubEvent={clubEventsDict[event].event} event={event} club={club}/>
             </>
         )
     } else {

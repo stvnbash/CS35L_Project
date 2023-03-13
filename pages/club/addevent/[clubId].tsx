@@ -3,6 +3,8 @@ import { firestore } from "@/lib/firebase";
 import { useRouter } from 'next/router';
 import AddClubEvent from 'components/AddClubEvent';
 import ErrorPage from 'next/error';
+import { useContext } from "react";
+import { UserContext } from '@/lib/context';
 
 
 export async function getServerSideProps(context) {
@@ -31,11 +33,14 @@ export async function getServerSideProps(context) {
 export default function UniqueClubPage({ club }) {
     const router = useRouter();
     const { clubId } = router.query;
-    // console.log(clubsDict);
+    const { email } = useContext(UserContext);
+    let clubModerators = [];
+    if (club.moderators) clubModerators = club.moderators;
     // console.log("CLUB ID", clubId);
 
-    if (club) {
+    if (club && (clubModerators).includes(email)) {
         const clubName = club.name;
+        console.log(club.moderators)
 
         return (
             <>

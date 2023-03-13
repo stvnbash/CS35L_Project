@@ -1,8 +1,14 @@
 // @ts-nocheck
-import Calendar from '@fullcalendar/react';
-import dayGrid from '@fullcalendar/daygrid';
-import timeGrid from '@fullcalendar/timegrid'
+
+// calendar imports
+import Calendar from "@fullcalendar/react";
+import dayGrid from "@fullcalendar/daygrid";
+import timeGrid from "@fullcalendar/timegrid";
+
+// firestore imports
 import { firestore } from "@/lib/firebase";
+
+// react imports
 import React, { useEffect, useState } from "react";
 
 
@@ -18,30 +24,26 @@ export default function Component({ initialView, joinedClubs, setEventsList, set
             setRun(true);
             setEvents(eventsUE);
             // this state is for ClubPage and is passed in as a prop
-            // setEventsList && setEventsList(events);
             setCalRun && setCalRun(run)
         }
         fetchEvents();
     }, [joinedClubs]);
 
 
-    // setEventsList && setEventsList(events);
-
-
     async function fetchData(joinedClubs) {
         let events = [];
         if (joinedClubs) {
             await Promise.all(joinedClubs.map(async (club) => {
-                const snapshot = await firestore.collection('clubs').doc(club).collection('events').get();
+                const snapshot = await firestore.collection("clubs").doc(club).collection("events").get();
                 const event = snapshot.docs.map(doc => doc.data());
                 console.log("My Club Event", event);
                 events = events.concat(event);
             }));
         } else {
-            const snapshot = await firestore.collection('clubs').get();
+            const snapshot = await firestore.collection("clubs").get();
             const clubs = snapshot.docs.map(doc => doc.id);
             await Promise.all(clubs.map(async (club) => {
-                const snapshot = await firestore.collection('clubs').doc(club).collection('events').get();
+                const snapshot = await firestore.collection("clubs").doc(club).collection("events").get();
                 const event = snapshot.docs.map(doc => doc.data());
                 events = events.concat(event);
             }));
@@ -69,15 +71,15 @@ export default function Component({ initialView, joinedClubs, setEventsList, set
             initialView={initialView}
             events={eventArray}
             headerToolbar={{
-                start: 'today prev,next',
-                center: 'title',
-                end: 'dayGridDay,dayGridMonth,timeGridWeekShort'
+                start: "today prev,next",
+                center: "title",
+                end: "dayGridDay,dayGridMonth,timeGridWeekShort"
             }}
             views={{
                 timeGridWeekShort: {
-                    type: 'timeGridWeek',
-                    slotMinTime: '08:00:00',
-                    slotMaxTime: '22:00:00'
+                    type: "timeGridWeek",
+                    slotMinTime: "08:00:00",
+                    slotMaxTime: "22:00:00"
                 }
             }}
             nowIndicator={true}

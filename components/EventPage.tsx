@@ -11,13 +11,10 @@ function DeleteEvent({ clubId, eventId }: { clubId: string, eventId: string }) {
     const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter();
 
-
     async function handleDelete() {
         setIsDeleting(true);
-        console.log("IN FUN");
         console.log("CLUB ID DELETE", clubId)
         console.log("EVENT ID DELETE", eventId)
-
 
         try {
             await firestore.collection('clubs').doc(clubId).collection('events').doc(eventId).delete();
@@ -73,13 +70,11 @@ export default function Component({ clubEvent, event, club, clubData }: { clubEv
                 <h3 className="text-lg pb-4 font-bold">Event Description</h3>
                 <p>{clubEvent.description}</p>
                 <br />
-                {/* <div style={{ display: 'inline-block'}}> */}
                 <div className='flex flex-row gap-8'>
                     <div className=''>
                         <h3 className="test-lg pb-4 font-bold">Start Time</h3>
                         <p>{formattedStart}</p>
                     </div>
-                    {/* <div style={{ display: 'inline-block', marginLeft: '20px'}}> */}
                     <div className=''>
                         <h3 className="test-lg pb-4 font-bold">End Time</h3>
                         <p>{formattedEnd}</p>

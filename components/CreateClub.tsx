@@ -4,7 +4,7 @@ import { UserContext } from "@/lib/context"
 import { useContext, ChangeEvent, useState } from "react"
 
 import { db } from '@/lib/firebase'
-import { doc, setDoc, query, where, getDoc, getDocs, collection, addDoc, limit } from 'firebase/firestore'
+import { query, where, getDocs, collection, addDoc, limit } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 
 
@@ -23,7 +23,6 @@ async function inputCheck(clubName, clubDescription, email, clubInstagram, clubW
 }
 
 async function createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite}, {clubEventColor}) {
-    //let clubId = clubName.replace(/\s+/g, "")
     await addDoc(collection(db, "clubs"), {
         name: clubName,
         description: clubDescription,
@@ -69,7 +68,6 @@ export default function CreateClub() {
         <div>
             <div className="flex flex-row items-end  px-4">
                 <h1 className="text-2xl font-bold flex-1">Create a club:</h1>
-                {/* <button className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500">Join Club</button> */}
             </div>
             <div className="mt-4 p-4 bg-slate-100 rounded-2xl">
                 <h3 className="text-lg p-4">Enter Club Name</h3>

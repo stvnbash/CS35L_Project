@@ -15,6 +15,7 @@ export default function Component() {
                     <Link href='/'>Home</Link>
                     <Link href='/allclubevents'>Events</Link>
                     {email && <Link href='/myclubevents'>My Events</Link>}
+                    {email && <Link href='/create'>Create a Club</Link>}
                 </div>
                 <div className='flex flex-col items-center text-sm'>
                     {email && <p className='' title={email as string}>{`Welcome, ${name}`}</p>}

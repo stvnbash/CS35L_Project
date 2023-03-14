@@ -8,7 +8,7 @@ import { doc, setDoc, query, where, getDoc, getDocs, collection, addDoc, limit }
 import { useRouter } from 'next/router'
 
 
-async function inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite){
+async function inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite, clubEventColor){
     if (clubName !== ""  && clubDescription !== "") {
         let data;
         const q = query(collection(db, "clubs"), where("name", "==", clubName), limit(1));
@@ -17,19 +17,20 @@ async function inputCheck(clubName, clubDescription, email, clubInstagram, clubW
             data = doc.data();
         });
         if(data === undefined){
-            createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite})
+            createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite}, {clubEventColor})
         }
     }
 }
 
-async function createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite}) {
+async function createClub(db, {clubName}, {clubDescription}, {email}, {clubInstagram}, {clubWebsite}, {clubEventColor}) {
     //let clubId = clubName.replace(/\s+/g, "")
     await addDoc(collection(db, "clubs"), {
         name: clubName,
         description: clubDescription,
         moderators: [email],
         instagram: clubInstagram,
-        website: clubWebsite
+        website: clubWebsite,
+        backgroundColor: clubEventColor
     });
 }
 
@@ -39,6 +40,7 @@ export default function CreateClub() {
     const [clubDescription, setClubDescription] = useState("")
     const [clubWebsite, setWebsite] = useState("");
     const [clubInstagram, setInstagram] = useState("")
+    const [clubEventColor, setEventColor] = useState("#0000FF");
     const router = useRouter()
 
     const getClubName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +59,11 @@ export default function CreateClub() {
         //Store the input value to local state
         setInstagram(e.target.value);
       };
+
+    const getClubEventColor = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        setEventColor(e.target.value);
+    };
 
     return (
         <div>
@@ -93,9 +100,15 @@ export default function CreateClub() {
                     placeholder="https://instagram.com/uclaclubhub"
                     onChange={getClubInstagram}
                     value={clubInstagram} />
+                <h3 className="text-lg p-4">Enter Club Event Color</h3>
+                <input
+                    className="mb-8 appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    type="color"
+                    onChange={getClubEventColor}
+                    value={clubEventColor} />
                 <button
                     className="text-lg font-bold px-4 py-2 rounded-xl text-slate-100 bg-gradient-to-r from-emerald-500 to-sky-500"
-                    onClick={() => {router.push(`/`); inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite)}}>
+                    onClick={() => {router.push(`/`); inputCheck(clubName, clubDescription, email, clubInstagram, clubWebsite, clubEventColor)}}>
                     Create Club
                 </button>
             </div>

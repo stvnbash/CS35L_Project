@@ -1,8 +1,6 @@
 // @ts-nocheck
 
 import Intro from "../components/Intro";
-import MyClubs from "../components/MyClubs";
-import AllClubs from "../components/AllClubs";
 import ClubCardGrid from "../components/ClubCardGrid";
 
 import { UserContext } from "@/lib/context";
@@ -25,8 +23,6 @@ export async function getServerSideProps(context) {
 
   const clubsAllData = clubsMetaData.map((doc) => [doc.id, doc.data()]);
 
-  // clubsAllData = clubsAllData.map(i => {{id: i[0], ...i[1]}} )
-
   let clubsDict = {};
   for (let i = 0; i < clubs.length; i++) {
     clubsDict[clubDocIDs[i]] = { id: clubDocIDs[i], ...clubs[i] };
@@ -47,24 +43,10 @@ export async function getServerSideProps(context) {
 export default function Home({ clubs, clubsDict }) {
   // get context from _app
   const { name, email, uid, joinedClubs } = useContext(UserContext);
-  // const [myClubs, setMyClubs] = useState([]);
-  // console.log("joindeclbus",  joinedClubs)
-  // useEffect(() => {
-  //   if (joinedClubs) {
-  //     for(let i = 0; i < joinedClubs.length; i++) {
-  //       console.log(joinedClubs[i])
-  //       console.log(clubsDict[joinedClubs[i]])
-  //       myClubs.push(clubsDict[joinedClubs[i]]);
-  //     }
-  //   }
-  // }, [joinedClubs]);
 
-
-  // if user is
   let myClubs = []
   for (let club of clubs) {
     if (joinedClubs && joinedClubs.includes(club.id)) {
-      // console.log("aaa", club.id)
       myClubs.push(club)
     }
   }

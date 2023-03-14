@@ -1,9 +1,5 @@
 // @ts-nocheck
 
-import { firestore } from "@/lib/firebase";
-import { useRouter } from 'next/router';
-import ClubPage from 'components/ClubPage';
-import ClubJoin from 'components/ClubJoin';
 import CreateClub from "@/components/CreateClub";
 import { UserContext } from "@/lib/context";
 import { useContext } from "react";

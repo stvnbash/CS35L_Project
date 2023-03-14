@@ -8,16 +8,7 @@ import { UserContext } from '@/lib/context';
 
 
 export async function getServerSideProps(context) {
-    // const clubCollection = firestore.collection("clubs").orderBy("name");
-    // const clubsMetaData = (await clubCollection.get()).docs;
-    // const clubDocIDs = clubsMetaData.map((doc) => doc.id);
-    // const clubs = clubsMetaData.map((doc) => doc.data());
-    // let clubsDict = {};
-    // for  (let i = 0; i < clubs.length; i++) {
-    //     clubsDict[clubDocIDs[i]] = {  id: clubDocIDs[i], ...clubs[i]  };
-    // }
     const { clubId } = context.params
-    // console.log("abc", clubId)
     let club = (await firestore.collection("clubs").doc(clubId).get()).data()
     club = club ? { id: clubId, ...club } : false
 
@@ -25,7 +16,6 @@ export async function getServerSideProps(context) {
     return {
         props: {
             club: club
-            // clubsDict: JSON.parse(JSON.stringify(clubsDict)),
         },
     };
 }
@@ -36,7 +26,6 @@ export default function UniqueClubPage({ club }) {
     const { email } = useContext(UserContext);
     let clubModerators = [];
     if (club.moderators) clubModerators = club.moderators;
-    // console.log("CLUB ID", clubId);
 
     if (club && (clubModerators).includes(email)) {
         const clubName = club.name;
@@ -50,5 +39,4 @@ export default function UniqueClubPage({ club }) {
     } else {
         return (<ErrorPage statusCode={404} />)
     }
-
 }

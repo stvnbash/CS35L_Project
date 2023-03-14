@@ -22,7 +22,7 @@ import {
  * h1: contains title
  * p[class=org-description]: contains club description
  */
-const homeURL = "https://community.ucla.edu/studentorgs/technology";
+const homeURL = "https://community.ucla.edu/studentorgs/";
 
 // returns an array of all club types (urls)
 async function getClubTypes(page) {
@@ -69,30 +69,27 @@ export async function scrape() {
   // all clubs
   const clubs = [];
   // array of all club urls of all club types
-  //const allClubURLs = [];
+  const allClubURLs = [];
 
   const browser = await puppeteer.launch({ headless: true });
   const page = await (await browser).newPage();
   await page.goto(homeURL);
 
   // array of club types
-  //const clubTypes = await getClubTypes(page);
+  const clubTypes = getClubTypes(page);
 
-  /* // gets all club urls for each club type * expensive *
+  // gets all club urls for each club type * expensive *
   for (let i = 0; i < clubTypes.length; i++) {
     await page.goto(clubTypes[i])
     // extend list using unpacking operator
-    allClubURLs.push(...(await getClubURL(page)));
-  } */
-
-  const allClubURLs = await getClubURL(page);
+    allClubURLs.push(...getClubURL(page));
+  }
 
   // get all club information
   for (let i = 0; i < allClubURLs.length; i++) {
     await page.goto(allClubURLs[i]);
     // populate clubs array with club information
-    clubs.push(await getClubInfo(page));
-    //console.log("added %o", clubs[i]);
+    clubs.push(getClubInfo(page));
   }
 
   (await browser).close();
@@ -104,11 +101,11 @@ export async function scrape() {
 
 async function writeToDB(clubs) {
   for (let i = 0; i < 5; i++) {
-    addClub(clubs[i]);
+    addClubToDB(clubs[i]);
   }
 }
 
-async function addClub(club) {
+async function addClubToDB(club) {
   const clubQuery = query(collection(db, "clubs"), where("name", "==", `${club.name}`), limit(1));
   const allClubs = clubQuery.doc ? clubQuery.doc.data() : undefined;
 
@@ -124,7 +121,7 @@ async function addClub(club) {
         },
         { merge: true }
       );
-      console.log("added club %s", club.name);
+      console.log("added club %s to database", club.name);
     } else {
       console.log("club: %s already exists!", club.name);
     }

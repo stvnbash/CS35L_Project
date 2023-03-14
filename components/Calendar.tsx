@@ -35,8 +35,12 @@ export default function Component({ initialView, joinedClubs, setEventsList, set
         if (joinedClubs) {
             await Promise.all(joinedClubs.map(async (club) => {
                 const snapshot = await firestore.collection("clubs").doc(club).collection("events").get();
+                const clubDoc = (await firestore.collection("clubs").doc(club).get()).data();
                 const event = snapshot.docs.map(doc => doc.data());
-                console.log("My Club Event", event);
+                for (let e of event) {
+                    console.log("E   ", e);
+                    e["backgroundColor"] = clubDoc.backgroundColor;
+                }
                 events = events.concat(event);
             }));
         } else {
@@ -44,7 +48,12 @@ export default function Component({ initialView, joinedClubs, setEventsList, set
             const clubs = snapshot.docs.map(doc => doc.id);
             await Promise.all(clubs.map(async (club) => {
                 const snapshot = await firestore.collection("clubs").doc(club).collection("events").get();
+                const clubDoc = (await firestore.collection("clubs").doc(club).get()).data();
                 const event = snapshot.docs.map(doc => doc.data());
+                for (let e of event) {
+                    console.log("E   ", e);
+                    e["backgroundColor"] = clubDoc.backgroundColor;
+                }
                 events = events.concat(event);
             }));
         }

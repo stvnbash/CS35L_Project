@@ -80,7 +80,7 @@ async function addUser(user) {
     // set the document contents to the user's profile
     await setDoc(
       userDoc,
-      { name: user?.displayName, email: user?.email, uid: user?.uid },
+      { name: user?.displayName, email: user?.email, uid: user?.uid, clubs: [] },
       // make sure to keep merge on so as to not accidentally overwrite
       { merge: true }
     );

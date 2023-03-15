@@ -5,7 +5,7 @@ import ClubCard from "./ClubCard"
 export default function Component({ clubs, blockTitle, noClubsMessage, search }: { clubs: any, blockTitle: string, noClubsMessage: string, search?: string }) {
     let c = []
     for (let club of clubs) {
-        console.log(search, club.name, club.description)
+        console.log(club.name)
         if (search === '' || club.name?.toLowerCase().includes(search) || club.description?.toLowerCase().includes(search)) {
             c.push(club)
         }

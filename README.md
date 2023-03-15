@@ -1,7 +1,10 @@
-installed next-auth, firebase, tailwindcss
+## README ##
 
-configured nextauth with Google IDP with hd of g.ucla.edu
-to restrict signin to UCLA students only
-
-configured tailwindcss
-
+# Installation #
+To run the application, run the following commands:
+```
+git clone https://github.com/stvnbash/CS35L_Project
+cd CS35L_Project
+npm install
+npm run dev
+```
